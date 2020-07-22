@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>이달의도서</title>
+{% endblock title %}
+
+{% block content %}
+<div>
+    <div class="flex-initial absolute ml-10 my-5 text-center mt-16 mb-10 font-medium text-xl self-center">
+        <a href = "{%url 'articles:author' %}">이달의작가</a><br>
+        <a href = "{%url 'articles:book' %}">이달의도서</a><br>
+        <a href = "{%url 'articles:event' %}">이달의행사</a><br>
+    </div>
+</div>
+    <div class="container absolute w-20 pt-40 ml-10 my-32 text-normal">
+        <div class="mb-5">Bookcategory    
+            {% for book in book_cate %}
+            <div><a href = "?cate_book={{book.pk}}">{{book}}</a></div>
+            {% endfor %}
+        </div>
+        <div class="mb-5">year : 
+            {% for year in book_info_date_year%}
+            <a href = "?cate_year={{year}}">{{year}}</a>
+            {%endfor%}
+        </div>
+        <div>month : 
+            {% for month in book_info_date_month%}
+            <a href = "?cate_month={{month}}">{{month}}</a>
+            {%endfor%}
+        </div>
+    </div>
+</div>
+    
+        <div class="px-5 pl-32 w-full ml-20">
+            {% for book in page_obj %}
+            <div class="container w-full text-sm font-normal">
+                    {% if book.bookArticlePic %}
+                        <div class="w-75vh bg-cover bg-center mt-20"><a href = ""><img src = '{{ book.bookArticlePic.url }}'></a></div>
+                    {% endif %}
+                    <div class="container py-10 mb-20 h-25vh text-sm font-normal pt-10">
+                        <div class="font-normal justify-start">
+                            <div class="font-bold font text-4xl text-green-700 pb-10">기사제목 : {{book.articleTitle}}</div>
+                            <div class="w-7/12">기사내용 : {{book.articleExp}}</div>
+                        </div>
+                    </div>
+            {% endfor %}
+            </div>
+        </div>
+{% comment %} 페이징 처리 {% endcomment %}
+
+
+<div class="flex flex-wrap content-end justify-end w-7/12">
+    {% comment %} 책카테고리별 {% endcomment %}
+    {% if page_book %}
+        
+        {% if is_paginated %}
+        <p>
+        {% if has_previous_page %}
+            <a href='/articles/book/?cate_book={{page_book}}&page={{previous_page}}'>이전</a>
+        {% endif %}
+
+        {% for page in current_page_group_range %}
+            {% if page == page_obj.number %}
+                {{page}}
+            {% else %}
+                <a href='/articles/book/?cate_book={{page_book}}&page={{page}}'>
+                    {{page}} &nbsp;&nbsp;&nbsp;
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if has_next_page %}
+            <a href='/articles/book/?cate_book={{page_book}}&page={{next_page}}'>다음</a>
+        {% endif %}
+
+        </p>
+        {% endif %}
+
+        {% comment %} 연카테고리별 {% endcomment %}
+    {% elif page_year %}
+        {% if is_paginated %}
+        <p>
+        {% if has_previous_page %}
+            <a href='/articles/book/?cate_year={{page_year}}&page={{previous_page}}'>이전</a>
+        {% endif %}
+
+        {% for page in current_page_group_range %}
+            {% if page == page_obj.number %}
+                {{page}}
+            {% else %}
+                <a href='/articles/book/?cate_year={{page_year}}&page={{page}}'>
+                    {{page}} &nbsp;&nbsp;&nbsp;
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if has_next_page %}
+            <a href='/articles/book/?cate_year={{page_year}}&page={{next_page}}'>다음</a>
+        {% endif %}
+
+        </p>
+        {% endif %}
+
+        {% comment %} 월카테고리별 {% endcomment %}
+    {% elif page_month %}
+        {% if is_paginated %}
+        <p>
+        {% if has_previous_page %}
+            <a href='/articles/book/?cate_month={{page_month}}&page={{previous_page}}'>이전</a>
+        {% endif %}
+
+        {% for page in current_page_group_range %}
+            {% if page == page_obj.number %}
+                {{page}}
+            {% else %}
+                <a href='/articles/book/?cate_month={{page_month}}&page={{page}}'>
+                    {{page}} &nbsp;&nbsp;&nbsp;
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if has_next_page %}
+            <a href='/articles/book/?cate_month={{page_month}}&page={{next_page}}'>다음</a>
+        {% endif %}
+
+        </p>
+        {% endif %}
+         {% comment %} 카테고리아닐때(평상시) {% endcomment %}
+        {% else %}
+        {% if is_paginated %}
+        <p>
+        {% if has_previous_page %}
+            <a href='/articles/book/?page={{previous_page}}'>이전</a>
+        {% endif %}
+
+        {% for page in current_page_group_range %}
+            {% if page == page_obj.number %}
+                {{page}}
+            {% else %}
+                <a href='/articles/book/?page={{page}}'>
+                    {{page}} &nbsp;&nbsp;&nbsp;
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if has_next_page %}
+            <a href='/articles/book/?page={{next_page}}'>다음</a>
+        {% endif %}
+
+        </p>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock content %}

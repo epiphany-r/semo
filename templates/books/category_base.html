@@ -1,0 +1,3 @@
+{% for category in categoryList %}
+    <div class="pb-2"><a href="{% url 'books:search' %}?category={{ category.id }}">{{ category }}</a></div>
+{% endfor %}

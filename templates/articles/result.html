@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>행사검색결과</title>
+{% endblock title %}
+
+{% block content %}
+
+
+<div class="ml-10 w-3/12 pt-10">
+    <form action="{%url 'articles:result' %}" method='GET'>
+    {% csrf_token %}
+	<input type='search' name='query' placeholder="지역/행사 제목 검색" value='{{ q }}' class="container bg-gray-100 appearance-none border-2 border-gray-200 shadow-lg focus:outline-none focus:bg-white focus:border-green-500 rounded px-2 mr-4 w-7/12">
+    <input type='Submit' value="" name="Submit" class="container w-8 h-8 cursor-pointer bg-center bg-cover transparent hover:bg-green-500 focus:border-green-500" style="background-image:url(https://imageog.flaticon.com/icons/png/512/71/71403.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF)">
+    </form>
+</div>
+
+
+
+<div class="text-center mt-16 mb-24 font-medium text-xl self-center">
+    <div class="w-full mt-6">
+        <div class="flex-initial absolute ml-10 my-5">
+            <a href = "{%url 'articles:author' %}">이달의작가</a><br>
+            <a href = "{%url 'articles:book' %}">이달의도서</a><br>
+            <a href = "{%url 'articles:event' %}">이달의행사</a><br>
+        </div>
+    </div>
+</div>
+
+    <div>
+        <div class="px-5 ml-25vh pl-32 w-full">
+            {% for event in page_obj %}
+                <div class="container w-full text-sm font-normal">
+                    {% if event.eventArticlePic %}
+                        <div class="w-75vh bg-cover bg-center mt-20"><a href = ""><img src = '{{ event.eventArticlePic.url }}'></a></div>
+                    {% endif %}
+                    <div class="container mb-5 text-sm font-normal">
+                        <div class="font-normal justify-start">
+                            <div class="font-bold font text-4xl text-green-700 pb-10 pt-4">행사이름 : {{event.articleTitle}}</div>
+                            <div class="w-7/12">기사내용 : {{event.articleExp}}</div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-3xl font-thin text-red-400 text ml-25vh">검색결과가 없습니다</p>
+            {% endfor %}
+        </div>
+    </div>
+            
+{% comment %} 페이징 처리 {% endcomment %}
+    <div>
+        {% if is_paginated %}
+        <p>
+        {% if has_previous_page %}
+            <a href='/articles/result/?query={{query}}&page={{previous_page}}'>이전</a>
+        {% endif %}
+
+        {% for page in current_page_group_range %}
+            {% if page == page_obj.number %}
+                {{page}}
+            {% else %}
+                <a href='/articles/result/?query={{query}}&page={{page}}'>
+                    {{page}} &nbsp;&nbsp;&nbsp;
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if has_next_page %}
+            <a href='/articles/result/?query={{query}}&page={{next_page}}'>다음</a>
+        {% endif %}
+
+        </p>
+        {% endif %}
+
+    </div>
+{% endblock content %}

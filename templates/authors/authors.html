@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>작가 상세페이지</title>
+{% endblock title %}
+
+{% block content %}
+
+    {{authors.authorName}}<br>
+    {{authors.authorExp}}<br>
+    {{authors.authorEmail}}
+
+    {% comment %} <div>
+    {% for userpic in userpics %}
+        {% if userpic.userPic %}
+                <img src="{{ userpic.userPic.url }}"> 
+        {% endif %}
+    {% endfor %}
+    </div>
+    <br>
+    <br>
+    {% for author in authors %}
+        {{author.authorName}}<br>
+        {{author.authorExp}}<br>
+        {{author.authorEmail}}
+        <br>
+        <br>
+    {% endfor %}
+    </div>
+    <div>
+        {% for writerblog in writerblogs %}
+            {% if writerblog.postPic %}
+                <img src="{{ writerblog.postPic.url }}"> 
+            {% endif %}
+            <h3>{{writerblog.postTitle}}</h3>
+            <br>{{writerblog.postExp|truncatechars:30}} / {{writerblog.postDate}}
+        {% endfor %}
+    </div>
+
+     {% endcomment %}
+
+
+{% endblock content %}

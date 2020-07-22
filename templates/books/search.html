@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>도서검색 결과</title>{% endblock title %}
+
+{% block content %}
+<div>
+    <div class="text-center mt-10 mb-10 font-medium text-3xl self-center">
+        <form class="content-center" action="/books/search/" method='GET'>
+            <input type='search' name='q' value='{{ q }}' class="container bg-gray-100 appearance-none border-2 border-gray-200 shadow-lg focus:outline-none focus:bg-white focus:border-green-500 rounded px-2 mr-4 w-1/4">
+            <input type='Submit' value="" name="Submit" class="container w-8 h-8 cursor-pointer bg-center bg-cover transparent hover:bg-green-500 focus:border-green-500" style="background-image:url(https://imageog.flaticon.com/icons/png/512/71/71403.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF)">
+        </form>
+    </div>
+
+
+        <div class="absolute">
+            <div class="w-20 ml-10">
+                {% include 'books/category_base.html' %}
+            </div>
+        </div>
+    
+    <div>
+    <div class="px-5 ml-25vh w-full flex flex-wrap">
+                {% if book_search %}
+                {% for search in book_search %}
+                    <div class="container w-1/4 mb-5 mx-10 text-sm font-normal">
+                        {% if search.bookPic %}
+                            <div class="w-64 h-50vh bg-cover bg-center cursor-pointer" onclick="location.href='/books/{{search.pk}}';" style="background-image: url({{search.bookPic.url}});"></div>
+                        {% endif %}
+                        <div class="container mb-5 text-sm font-normal ">
+                            <div class="font-thin justify-start">
+                                <div>{{search.bookTitle|truncatechars:25}}</div>
+                                <div>{{search.price}}원</div>
+                            </div>
+                        </div>                                                
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="font-bold text-red-600 text-3xl px-50vh mb-50vh">도서가 존재하지 않습니다.</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div>
+    {% if is_paginated %}
+    {% if request.GET.q%}
+    <p>
+    <!--이전 페이지 그룹으로 이동-->
+    {% if has_previous_page %}
+        <a href="/books/search/?q={{ request.GET.q }}&page={{ previous_page }}">이전</a>
+    {% endif %}
+    <!--페이지 번호 링크-->
+    {% for page in current_page_group_range %}
+    {% comment %} page_obj.number: 현재 보고있는 페이지 {% endcomment %}
+        {% if page == page_obj.number %}
+            {{ page }}
+        {% else %}
+            <a href="/books/search/?q={{ request.GET.q }}&page={{ page }}">
+                {{ page }} &nbsp;&nbsp;
+            </a>
+        {% endif %}
+    {% endfor %}
+    <!--다음 페이지 그룹으로 이동-->
+    {% if has_next_page %}
+        <a href="/books/search/?q={{ request.GET.q }}&page={{ next_page }}">다음</a>
+    {% endif %}
+    </p>
+
+    {% elif request.GET.category %}
+    <p>
+    <!--이전 페이지 그룹으로 이동-->
+    {% if has_previous_page %}
+        <a href="/books/search/?category={{ request.GET.category }}&page={{ previous_page }}">이전</a>
+    {% endif %}
+    <!--페이지 번호 링크-->
+    {% for page in current_page_group_range %}
+    {% comment %} page_obj.number: 현재 보고있는 페이지 {% endcomment %}
+        {% if page == page_obj.number %}
+            {{ page }}
+        {% else %}
+            <a href="/books/search/?category={{ request.GET.category }}&page={{ page }}">
+                {{ page }} &nbsp;&nbsp;
+            </a>
+        {% endif %}
+    {% endfor %}
+    <!--다음 페이지 그룹으로 이동-->
+    {% if has_next_page %}
+        <a href="/books/search/?category={{ request.GET.category }}&page={{ next_page }}">다음</a>
+    {% endif %}
+    </p>
+    {% endif %}
+    {% endif %}
+    </div>
+</div>
+{% endblock content %}

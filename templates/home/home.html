@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>세모책방</title>
+{% endblock title %}
+
+{% block content %}
+<!--여기서부터 페이지 슬라이드 그리드-->
+<div class="container.mx-auto">
+    <div class="mx-48 mt-20 w-8/12 bg-center">
+        {% for article in special_article %}
+            <div class="container w-full bg-gray-600 h-75vh mb-4 ml-16 bg-cover bg-center cursor-pointer" onclick="location.href='{% url "articles:book" %}'"; style="background-image:url({{article.bookArticlePic.url}})">
+            </div>
+            <div class="container text-center mb-20 font-semibold text-3xl mt-12">
+            <!--<h2>이달의 공모전</h2>-->
+            </div>    
+        {% endfor %}
+    </div>
+    
+    <!--여기까지 페이지 슬라이드-->
+    <h3 class="text-left ml-4 text-2xl mb-10 border-b-4 border-green-700 border-opacity-50 mr-4 border-double">새로 들어온 책</h3>
+    <div class="flex ml-4 flex-wrap border-b-4 border-green-700 border-opacity-50 mr-4 border-double">
+        {% for book in books %}
+            {% if book.bookPic %}
+                <div class="container w-1/4 mb-5 px-4 text-sm font-normal">
+                    <div class="w-full h-75vh bg-cover bg-center cursor-pointer" onclick="location.href='{% url 'books:detail' book.pk %}'"; style="background-image: url({{book.bookPic.url}});"></div>
+                    <div class="">
+                        {{book.bookCategoryID}}<br>
+                        <h4>{{book.bookTitle}}</h4>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+        <br>
+        <br>
+        <br>
+    <div>
+        <h3 class="text-left ml-4 text-2xl mb-10 border-b-4 border-green-700 border-opacity-50 mr-4 border-double">작가의 책장</h3>
+        <div class="flex ml-4 flex-wrap border-b-4 border-green-700 border-opacity-50 mr-4 border-double">
+        {% for book in writers_books %}
+            {% if book.bookPic %}
+            <div class="container w-1/4 mb-5 px-4 text-sm font-normal ">
+                <div class="w-full h-75vh bg-cover bg-center cursor-pointer"  onclick="location.href='{% url 'books:detail' book.pk %}'"; style="background-image: url({{book.bookPic.url}});"></div>
+                <div class="">
+                    {{book.bookCategoryID}}
+                    <h4>{{book.bookTitle}}</h4>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
+
+

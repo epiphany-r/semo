@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block container %}
+
+<div class = "container">
+    <h1> {{ people.username }}</h1>
+    {% if user == people %}
+    <div>
+    <a href="{% url 'users:update' %}">계정정보 수정</a>
+    </div>
+    {% endif %}
+    <div class = "row">
+        {% for post in people.post_set.all %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock container %}

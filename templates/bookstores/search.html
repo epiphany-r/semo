@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>search.html</title>{% endblock title %}
+
+{% block content %}
+
+    <div class="text-center mt-10 mb-10 font-medium text-3xl self-center">
+        <form class="content-center" action="/bookstores/search/" method='GET'>
+            {% csrf_token %}
+            <div class="mr-24 mb-5 text-gray-600 text-opacity-50"> 서점명을 입력하세요. </div>
+            <input type='search' name='q' value='{{ q }}' class=" container bg-gray-100 appearance-none border-2 border-gray-200 shadow-lg focus:outline-none focus:bg-white focus:border-green-500 rounded px-2 mr-4 w-1/4 ">
+            <input type='Submit' value="" name="Submit" class="container w-8 h-8 cursor-pointer bg-center bg-cover transparent hover:bg-green-500 focus:border-green-500" style="background-image:url(https://imageog.flaticon.com/icons/png/512/71/71403.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF)">
+        </form>
+    </div>
+
+    {% comment %} 책방 사진 / 이미지 크기 조정 {% endcomment %}
+    <div class="container content-center justify-center items-center pl-25vh"><!--이미지 부터 전체 상자-->
+        <div class="container w-full h-75vh mb-4 bg-cover bg-center ml-10 rounded-xl" style="background-image:url(https://images.unsplash.com/photo-1577985051167-0d49eec21977?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1325&q=80)">
+        </div>
+        <div><h3 class="font-bold text-3xl ml-25vh">이달의 책방</h3><br><div class="ml-25vh">운영자가 다녀온 독립서점</div><br><div class="ml-25vh"> 독립서점 주인장이 이러이러함 여기서는 커피도 마실수 있음 어쩌고</div></div>
+        <div><!--시작!-->
+            <div><!--Table div-->
+                {% if search %}
+                <table class='table mt-12 w-9/12 ml-25vh'>
+                    <thead>
+                    <tr class="text-center h-8">
+                        <th class="bg-green-300 text-center w-50vh">사진</th>
+                        <th class="bg-green-300 text-center w-75vh">정보</th>
+                    </tr>
+                    </thead>
+                    <tbody class="bg-gray-100 text-center shadow-lg">
+                        {% for bookstore in search %}
+                            <tr class="h-10">
+                                <th rowspan=2>
+                                    <a href="{% url 'bookstores:detail' bookstore.pk %}">
+                                    <img src = "{{bookstore.bookstorePic.url}}"></a>
+                                </th>
+                                <td class="pt-3 pl-3">
+                                    <a href="{% url 'bookstores:detail' bookstore.pk %}">
+                                    {{bookstore.bookstoreName}}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>{{bookstore.bookstoreAddress}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div><!--Table div 끝! -->
+            {% else %}
+                <br>
+                <p class="text-3xl font-thin text-red-400 text ml-25vh"> 결과를 찾을 수 없습니다. </p>
+                <br>
+            {% endif %}
+
+    {% comment %} 페이징 작업 {% endcomment %}
+    {% if is_paginated %}
+        <p>
+        {% if has_previous_page %}
+            <a href="/bookstores/search/?q={{ request.GET.q }}&page={{ previous_page }}">이전</a>
+        {% endif %}
+        
+        {% for page in current_page_group_range %}
+            {% if page == page_obj.number %}
+                {{ page }}
+            {% else %}
+                <a href="/bookstores/search/?q={{ request.GET.q }}&page={{ page }}">
+                    {{ page }} &nbsp;&nbsp;
+                </a>
+            {% endif %}
+        {% endfor %}
+        
+        {% if has_next_page %}
+            <a href="/bookstores/search/?q={{ request.GET.q }}&page={{ next_page }}">다음</a>
+        {% endif %}
+        </p>
+    {% endif %}
+
+{% endblock content %}
+

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}
+<title>이달의작가</title>
+{% endblock title %}
+{% block content %}
+<div>
+    <div class="text-center mt-16 mb-10 font-medium text-xl self-center">
+        <div class="w-full mt-20">
+            <div class="flex-initial absolute ml-10 my-5">
+                <a href = "{%url 'articles:author' %}">이달의작가</a><br>
+                <a href = "{%url 'articles:book' %}">이달의도서</a><br>
+                <a href = "{%url 'articles:event' %}">이달의행사</a><br>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="px-5 ml-25vh pl-32 w-full">
+            {% for author in author_list  %}
+                <div class="container w-2/4 mb-5 mx-10 text-sm font-normal">
+                    {% if author.authorArticlePic %}
+                        <div class="w-50vh h-50vh bg-cover bg-center cursor-pointer"><a href = ""><img src = '{{ author.authorArticlePic.url }}' width='300',height='350'> </a></div>
+                    {% endif %}
+                    <div class="container mb-5 text-sm font-normal">
+                        <div class="font-normal justify-start">
+                            <div class="mb-5">기사제목 : {{author.articleTitle}}</div>
+                            <div>기사내용 : {{author.articleExp}}</div>
+                        </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% comment %} 페이징 처리 {% endcomment %}
+    <div>
+        {% if is_paginated %}
+        <p>
+        {% if has_previous_page %}
+            <a href='/articles/author/?page={{previous_page}}'>이전</a>
+        {% endif %}
+
+        {% for page in current_page_group_range %}
+            {% if page == page_obj.number %}
+                {{page}}
+            {% else %}
+                <a href='/articles/author/?page={{page}}'>
+                    {{page}} &nbsp;&nbsp;&nbsp;
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if has_next_page %}
+            <a href='/articles/author/?page={{next_page}}'>다음</a>
+        {% endif %}
+
+        </p>
+        {% endif %}
+
+    </div>
+
+{% endblock content %}

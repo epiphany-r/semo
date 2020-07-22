@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>세모작가 게시판</title>
+{% endblock title %}
+
+{% block content %}
+
+<div class="content-center px-64 mx-32 my-10 w-full">
+    <table class='table'>
+        <tbody>
+        <div>
+            {% for writerblog in object_list %}
+                <tr>
+                    <th class="w-25vh py-10" rowspan=3>
+                        <a href="{% url 'writerblogs:detail' writerblog.pk%}">
+                        <img class="rounded-full h-28" src = "{{writerblog.postPic.url}}" width ='200'> 
+                        </a>
+                    </th>
+                    <td class="pl-5 pt-10 flex">
+                        <a href="{% url 'writerblogs:detail' writerblog.pk%}">
+                            {{writerblog.postTitle}}
+                        </a>
+                    </td>
+                <tr>
+                    <td class="pl-5 flex">
+                        <a href="{% url 'writerblogs:detail' writerblog.pk%}">
+                        {{writerblog.postExp|truncatechars:30}} 
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="pl-5 flex">
+                        <a href="{% url 'writerblogs:detail' writerblog.pk%}">
+                        by {{writerblog.userID.nickName}} / {{writerblog.postDate}}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </div>
+        </tbody>
+
+    </table>
+
+    <input class="float-right mx-64 text-sm ml-8 bg-transparent hover:bg-green-400 text-green-700 font-semibold hover:text-white py-2 px-3 border border-green-400 hover:border-transparent rounded" type="button" value="등록하기" onclick="location.href='create'">
+</div>
+
+
+<div>
+        {% if is_paginated %}
+        <p>
+        {% if has_previous_page %}
+            <a href='/writerblog/?page={{previous_page}}'>이전</a>
+        {% endif %}
+
+        {% for page in current_page_group_range %}
+            {% if page == page_obj.number %}
+                {{page}}
+            {% else %}
+                <a href='/writerblog/?page={{page}}'>
+                    {{page}} &nbsp;&nbsp;&nbsp;
+                </a>
+            {% endif %}
+        {% endfor %}
+
+        {% if has_next_page %}
+            <a href='/writerblog/?page={{next_page}}'>다음</a>
+        {% endif %}
+
+        </p>
+        {% endif %}
+
+    </div>
+
+{% endblock content %}

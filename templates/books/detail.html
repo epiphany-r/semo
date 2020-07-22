@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>도서상세정보</title>{% endblock title %}
+
+{% block content %}
+
+    <div class="px-25vh"> <!--전체 div-->
+        {% if book_detail %}
+            <div class="container content-center justify-center items-center py-10 bg-gray-100 bg-opacity-75 shadow-xl mt-12"> <!--상자 칸-->
+            <div class="font-thin text-lg ml-10 my-2 opacity-75 text-left text-green-700">{{ book_detail.bookCategoryID }}</div>
+            <h2 class="font-medium text-2xl ml-12 my-2 mb-8 text-left text-green-700">{{book_detail.bookTitle}}</h2>
+            <div class="container flex justify-between"> <!--img div-->
+                <div class="container flex flex-wrap w-50vh h-auto bg-cover bg-center ml-48 " style="background-image: url({{ book_detail.bookPic.url }});">
+            </div>
+            <div class="w-75vh">
+                <div class="container text-base flex flex-wrap w-full pt-75vh pl-20">
+                    <div class="container font-semibold flex w-20 text-green-700 py-2 md:text-right mb-1 md:mb-0 pr-1">
+                        작가
+                    </div>
+                    <div class="container flex w-32 py-2 md:text-right mb-1 md:mb-0 pr-1">
+                        {{book_detail.authorID}}
+                    </div>
+                    <div class="container font-semibold flex w-20 text-green-700 py-2 md:text-right mb-1 md:mb-0 pr-1">
+                        출판사
+                    </div>
+                    <div class="container flex w-32 py-2 md:text-right mb-1 md:mb-0 pr-1">
+                        {{book_detail.publisherID }}
+                    </div>
+                    <div class="container font-semibold flex w-20 text-green-700 py-2 md:text-right mb-1 md:mb-0 pr-1">
+                        출판년도
+                    </div>
+                    <div class="container flex w-32 py-2 md:text-right mb-1 md:mb-0 pr-1">
+                        {{ book_detail.publisherDate|date:"Y" }}년
+                    </div>
+                    <div class="container font-semibold flex w-20 text-green-700 py-2 md:text-right mb-1 md:mb-0 pr-1">
+                        가격
+                    </div>
+                    <div class="container flex w-32 py-2 md:text-right mb-1 md:mb-0 pr-1">
+                        {{ book_detail.price }}원
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h3 class="text-xl text-green-700 mt-20 ml-12">도서 소개</h3>
+        <div class="pl-3 mx-12 mt-10">{{ book_detail.bookExp }}</div>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+

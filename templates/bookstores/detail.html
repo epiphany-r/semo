@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}<title>독립서점</title>{% endblock title %}
+
+{% block content %}
+
+
+<div class="px-25vh"> <!--전체 div-->
+    <div class="container content-center justify-center items-center py-10 bg-gray-100 bg-opacity-75 shadow-xl mt-12"> <!--상자 칸-->
+        <div class="container ml-5">
+            {% if bookstore_detail.bookstorePic %}
+                <a href='{{bookstore_detail.bookstorePic.url}}'></a><br>
+            {% endif %}
+        </div>
+            {% if bookstore_detail.bookstorePic %}
+                <img class="container h-75vh w-75vh justify-center ml-50vh" src="{{bookstore_detail.bookstorePic.url}}" width='500'>
+            {% endif %}
+            
+        <div class="container mt-12 mx-25vh font-medium text-lg opacity-75">
+            <h2 class="font-bold font text-4xl text-green-700 pb-10">{{bookstore_detail.bookstoreName}}</h2> 
+            <div class="container">주소 : {{bookstore_detail.bookstoreAddress}}</div>
+            <div class="container my-6">연락처 : {{bookstore_detail.bookstoreTel}}<br></div>
+        </div>
+        <div class="container mt-12 mx-25vh font-normal text-lg pr-75vh"><h3 class="text-4xl text-green-700">정보</h3><br>{{bookstore_detail.bookstoreExp}}</div>
+            {% if user.is_authenticated %}
+            <p class="container flex flex-row-reverse pt-5 pr-10">
+                <a href="{% url 'bookstores:update' bookstore_detail.pk%}" class='float-right text-sm ml-8 bg-transparent hover:bg-green-400 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-400 hover:border-transparent rounded'>수정</a>
+                <a href="{% url 'bookstores:delete' bookstore_detail.pk%}" class='float-right text-sm ml-8 bg-transparent hover:bg-green-400 text-green-700 font-semibold hover:text-white py-2 px-4 border border-green-400 hover:border-transparent rounded'
+                onclick="return confirm('정말 삭제하시겠습니까?')">
+                삭제
+                </a>
+            </p>
+            {% endif %}
+    </div>
+</div>
+
+{% endblock content %}
